@@ -1,1 +1,65 @@
+on: [push]
+
+name: FrontendDevTest
+
+env:  
+  ARM_CLIENT_ID: '${{ secrets.AZURE_AD_CLIENT_ID }}'
+  ARM_CLIENT_SECRET: '${{ secrets.AZURE_AD_CLIENT_SECRET }}'
+  ARM_SUBSCRIPTION_ID: '${{ secrets.AZURE_SUBSCRIPTION_ID }}'
+  ARM_TENANT_ID: '${{ secrets.AZURE_AD_TENANT_ID }}'
+
+jobs:
+  backend:
+    name: 'Frontend'
+    runs-on: ubuntu-latest
+
+    # Set the working directory to main for the config files
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Log in with Service Principal Azure
+        uses: azure/login@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+
+      # Install the preferred version of Terraform CLI 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.2.6
+
+      - name: 'Terraform Init'
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 1.2.6
+          tf_actions_subcommand: 'init'
+          tf_actions_working_dir: "Frontend"
+  
+      - name: 'Terraform Validate'
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 1.2.6
+          tf_actions_subcommand: 'validate'
+          tf_actions_working_dir: "Frontend"
+          
+      - name: 'Terraform Plan'
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 1.2.6
+          tf_actions_subcommand: 'plan'
+          tf_actions_working_dir: "Frontend"
+      
+      - name: 'Terraform Apply'
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 1.2.6
+          tf_actions_subcommand: 'apply'
+          tf_actions_working_dir: "Frontend"
+
 
