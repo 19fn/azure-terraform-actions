@@ -56,7 +56,7 @@ resource "azurerm_mssql_virtual_network_rule" "vnet_rule" {
   subnet_id = azurerm_subnet.subnet.id
 
   depends_on = [
-    azurerm_mysql_server.server,
+    azurerm_mssql_server.server,
     data.azurerm_subnet.subnet
   ]
 }
