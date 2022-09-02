@@ -1,62 +1,69 @@
-resource "azurerm_mssql_server" "server" {
-  name                              = var.mysql_server_name
-  location                          = var.rg_location
-  resource_group_name               = var.rg_name
-  version                           = "12.0"
-  administrator_login               = var.admin_name
-  administrator_login_password      = var.admin_password
-  minimum_tls_version               = "1.2"
+resource "azurerm_mysql_server" "server" {
+  name                = var.mysql_server_name
+  location            = var.rg_location
+  resource_group_name = var.rg_name
 
-  tags = {
-    environment = "devtest"
-  }
+  administrator_login          = var.admin_name
+  administrator_login_password = var.admin_password
+
+  sku_name   = "GP_Gen5_2"
+  storage_mb = 5120
+  version    = "5.7"
+
+  auto_grow_enabled                 = true
+  backup_retention_days             = 7
+  geo_redundant_backup_enabled      = false
+  infrastructure_encryption_enabled = true
+  public_network_access_enabled     = true
+  ssl_enforcement_enabled           = false
+  ssl_minimal_tls_version_enforced = "TLSEnforcementDisabled"
 }
 
-resource "azurerm_mssql_database" "database" {
-  name           = var.mysql_database_name
-  server_id      = azurerm_mssql_server.server.id
-  collation      = "SQL_Latin1_General_CP1_CI_AS"
-  license_type   = "LicenseIncluded"
-  max_size_gb    = 10
-  read_scale     = true
-  sku_name       = "P2"
-  zone_redundant = true
+resource "azurerm_mysql_database" "database" {
+  name                = var.mysql_database_name
+  resource_group_name = var.rg_name
+  server_name         = var.mysql_server_name
+  charset             = "utf8"
+  collation           = "utf8_unicode_ci"
 
-  tags = {
-    environment = "devtest"
-  }
-
-    depends_on = [
-    azurerm_mssql_server.server
+  depends_on = [
+    azurerm_mysql_server.server
   ]
 }
 
-resource "azurerm_subnet" "subnet" {
+data "http" "myip" {
+  url = "http://ipv4.icanhazip.com"
+}
+
+data "azurerm_subnet" "internal" {
   name                 = var.subnet_name
   virtual_network_name = var.vnet_name
   resource_group_name  = var.rg_name
-  address_prefixes     = [ "10.0.3.0/24" ]
-  service_endpoints    = ["Microsoft.Sql"]
 }
 
-resource "azurerm_mssql_firewall_rule" "firewall_rule" {
+resource "azurerm_mysql_firewall_rule" "example" {
   name                = var.mysql_firewall_rule_name
-  server_id           = azurerm_mssql_server.server.id
-  start_ip_address    = "181.46.137.29"
-  end_ip_address      = "181.46.137.29"
+  resource_group_name = var.rg_name
+  server_name         = var.mysql_server_name
+  start_ip_address    = "${chomp(data.http.myip.body)}"
+  end_ip_address      = "${chomp(data.http.myip.body)}"
 
   depends_on = [
-    azurerm_mssql_server.server
+    azurerm_mysql_server.server,
+    azurerm_mysql_database.database,
+    data.http.myip
   ]
 }
 
-resource "azurerm_mssql_virtual_network_rule" "vnet_rule" {
-  name      = var.mysql_vnet_name
-  server_id = azurerm_mssql_server.server.id
-  subnet_id = azurerm_subnet.subnet.id
+resource "azurerm_mysql_virtual_network_rule" "example" {
+  name                = var.mysql_vnet_name
+  resource_group_name = var.rg_name
+  server_name         = var.mysql_server_name
+  subnet_id           = data.azurerm_subnet.internal.id
 
   depends_on = [
-    azurerm_mssql_server.server,
-    azurerm_subnet.subnet
+    azurerm_mysql_server.server,
+    azurerm_mysql_database.database,
+    data.azurerm_subnet.internal
   ]
 }

@@ -18,19 +18,19 @@ variable "vnet_name" {
 
 variable "subnet_name" {
   type        = string
-  default     = "SUB-MSSQL-DEVTEST-EU01"
+  default     = "SUB-MYSQL-DEVTEST-EU01"
   description = "Virtual network name."
 }
 
 variable "mysql_server_name" {
   type        = string
-  default     = "mssql-server-devtest-eu01"
+  default     = "mysql-server-devtest-eu01"
   description = "MySQL Server Name"
 }
 
 variable "mysql_database_name" {
   type        = string
-  default     = "mssql-database-devtest-eu01"
+  default     = "mysql-database-devtest-eu01"
   description = "MySQL Database Name"
 }
 
