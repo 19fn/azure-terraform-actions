@@ -30,7 +30,7 @@ variable "mysql_server_name" {
 
 variable "mysql_database_name" {
   type        = string
-  default     = "mysql-database-devtest-eu01"
+  default     = "mssql-database-devtest-eu01"
   description = "MySQL Database Name"
 }
 
