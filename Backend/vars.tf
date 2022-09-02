@@ -24,7 +24,7 @@ variable "subnet_name" {
 
 variable "mysql_server_name" {
   type        = string
-  default     = "mysql-server-devtest-eu01"
+  default     = "mssql-server-devtest-eu01"
   description = "MySQL Server Name"
 }
 
