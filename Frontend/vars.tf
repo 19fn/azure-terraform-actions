@@ -19,8 +19,8 @@ variable "vnet_name" {
 variable "subnet_address" {
   type = map
   default = {
-      "FRONTEND-PROD-SUB-DEVTEST-EU01" = "10.0.5.0/24"
-      "FRONTEND-STAG-SUB-DEVTEST-EU01" = "10.0.6.0/24"
+      "FRONTEND-PROD-SUB-DEVTEST-EU01" = "10.0.2.0/24"
+      "FRONTEND-STAG-SUB-DEVTEST-EU01" = "10.0.3.0/24"
     }
   description = "FRONTEND Subnet address."
 }

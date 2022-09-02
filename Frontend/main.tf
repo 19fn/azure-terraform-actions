@@ -34,10 +34,6 @@ resource "azurerm_network_interface" "nic" {
   }
 }
 
-data "http" "myip" {
-  url = "http://ipv4.icanhazip.com"
-}
-
 resource "azurerm_network_security_group" "prod_nsg" {
   name                = var.nsg_prod_name
   location            = var.rg_location
@@ -52,7 +48,7 @@ resource "azurerm_network_security_group" "prod_nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = "${chomp(data.http.myip.body)}"
+    source_address_prefix      = "181.46.137.29"
     destination_address_prefix = "*"
   }
 
@@ -89,7 +85,7 @@ resource "azurerm_network_security_group" "stag_nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = "${chomp(data.http.myip.body)}"
+    source_address_prefix      = "181.46.137.29"
     destination_address_prefix = "*"
   }
 
@@ -102,7 +98,7 @@ resource "azurerm_network_security_group" "stag_nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "80"
-    source_address_prefix      = "${chomp(data.http.myip.body)}"
+    source_address_prefix      = "181.46.137.29"
     destination_address_prefix = "*"
   }
 }
