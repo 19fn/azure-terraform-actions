@@ -4,7 +4,7 @@ name: WebAppDevTest
 
 env:
   # set this to your application's name
-  AZURE_WEBAPP_NAME: voting-app-flask
+  AZURE_WEBAPP_NAME: 'voting-app-flask'
   # set this to the path to your web app project, defaults to the repository root
   AZURE_WEBAPP_PACKAGE_PATH: 'votingapp'
 
@@ -35,6 +35,8 @@ jobs:
 
       - name: Install dependencies
         run: |
+          python -m pip venv venv
+          source ./venv/bin/activate
           python -m pip install --upgrade pip
           pip install -r requirements.txt
         working-directory: votingapp
