@@ -18,7 +18,7 @@ variable "vnet_name" {
 
 variable "subnet_name" {
   type        = string
-  default     = "SUB-MYSQL-DEVTEST-EU01"
+  default     = "SUB-MSSQL-DEVTEST-EU01"
   description = "Virtual network name."
 }
 

@@ -17,9 +17,9 @@ resource "azurerm_mssql_database" "database" {
   server_id      = azurerm_mssql_server.server.id
   collation      = "SQL_Latin1_General_CP1_CI_AS"
   license_type   = "LicenseIncluded"
-  max_size_gb    = 4
+  max_size_gb    = 10
   read_scale     = true
-  sku_name       = "S0"
+  sku_name       = "P2"
   zone_redundant = true
 
   tags = {
