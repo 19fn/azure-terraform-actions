@@ -4,7 +4,7 @@ name: WebAppDevTest
 
 env:
   # set this to your application's name
-  AZURE_WEBAPP_NAME: votingapp
+  AZURE_WEBAPP_NAME: app
   # set this to the path to your web app project, defaults to the repository root
   AZURE_WEBAPP_PACKAGE_PATH: 'votingapp'
 
@@ -39,7 +39,7 @@ jobs:
           pip install -r requirements.txt
         working-directory: votingapp
     
-      - name: Deploy web App using GH Action azure/webapps-deploy
+      - name: Deploy web App 
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
