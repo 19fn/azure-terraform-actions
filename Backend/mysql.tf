@@ -31,39 +31,34 @@ resource "azurerm_mysql_database" "database" {
   ]
 }
 
-data "http" "myip" {
-  url = "http://ipv4.icanhazip.com"
-}
-
-data "azurerm_subnet" "internal" {
+data "azurerm_subnet" "subnet" {
   name                 = var.subnet_name
   virtual_network_name = var.vnet_name
   resource_group_name  = var.rg_name
 }
 
-resource "azurerm_mysql_firewall_rule" "example" {
+resource "azurerm_mysql_firewall_rule" "firewall_rule" {
   name                = var.mysql_firewall_rule_name
   resource_group_name = var.rg_name
   server_name         = var.mysql_server_name
-  start_ip_address    = "${chomp(data.http.myip.body)}"
-  end_ip_address      = "${chomp(data.http.myip.body)}"
+  start_ip_address    = "181.46.137.29"
+  end_ip_address      = "181.46.137.29"
 
   depends_on = [
     azurerm_mysql_server.server,
-    azurerm_mysql_database.database,
-    data.http.myip
+    azurerm_mysql_database.database
   ]
 }
 
-resource "azurerm_mysql_virtual_network_rule" "example" {
+resource "azurerm_mysql_virtual_network_rule" "vnet_rule" {
   name                = var.mysql_vnet_name
   resource_group_name = var.rg_name
   server_name         = var.mysql_server_name
-  subnet_id           = data.azurerm_subnet.internal.id
+  subnet_id           = data.azurerm_subnet.subnet.id
 
   depends_on = [
     azurerm_mysql_server.server,
     azurerm_mysql_database.database,
-    data.azurerm_subnet.internal
+    data.azurerm_subnet.subnet
   ]
 }

@@ -30,7 +30,7 @@ variable "mysql_server_name" {
 
 variable "mysql_database_name" {
   type        = string
-  default     = "mysql-database-devtest-eu01"
+  default     = "devtest"
   description = "MySQL Database Name"
 }
 
@@ -48,7 +48,7 @@ variable "mysql_vnet_name" {
 
 variable "admin_name" {
   type        = string
-  default     = "devadmin"
+  default     = "fnc1_admin"
   description = "MySQL Administrator"
 }
 
