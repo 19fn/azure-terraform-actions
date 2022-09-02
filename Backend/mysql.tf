@@ -5,7 +5,7 @@ resource "azurerm_mssql_server" "server" {
   version                           = "12.0"
   administrator_login               = var.admin_name
   administrator_login_password      = var.admin_password
-  minimum_tls_version               = "Disabled"
+  minimum_tls_version               = "1.2"
 
   tags = {
     environment = "devtest"
