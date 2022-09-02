@@ -12,7 +12,7 @@ terraform {
     resource_group_name  = "RG-DEVTEST-EU01" 
     storage_account_name = "stgdevtesteu01"
     container_name       = "tfdevtest"
-    key                  = "terraform.tfstate"
+    key                  = "BEterraform.tfstate"
   }
 
 }
