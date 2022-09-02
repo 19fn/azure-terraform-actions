@@ -16,60 +16,44 @@ variable "vnet_name" {
   description = "Virtual network name."
 }
 
-variable "subnet_address" {
-  type = map
-  default = {
-      "BACKEND-PROD-SUB-DEVTEST-EU01" = "10.0.2.0/24"
-      "BACKEND-STAG-SUB-DEVTEST-EU01" = "10.0.3.0/24"
-    }
-  description = "Backend Subnet address."
-}
-
-variable "nic_subnet" {
-  type = map
-  default = {
-      "BACKEND-PROD-NIC-DEVTEST-EU01" = "BACKEND-PROD-SUB-DEVTEST-EU01"
-      "BACKEND-STAG-NIC-DEVTEST-EU01" = "BACKEND-STAG-SUB-DEVTEST-EU01"
-    }
-  description = "Backend network interface."
-}
-
-variable "nsg_prod_name" {
+variable "subnet_name" {
   type        = string
-  default     = "BACKEND-PROD-NSG-DEVTEST-EU01"
-  description = "Production Network security group."
+  default     = "SUB-MYSQL-DEVTEST-EU01"
+  description = "Virtual network name."
 }
 
-variable "nsg_stag_name" {
+variable "mysql_server_name" {
   type        = string
-  default     = "BACKEND-STAG-NSG-DEVTEST-EU01"
-  description = "Staging Network security group."
+  default     = "mysql-server-devtest-eu01"
+  description = "MySQL Server Name"
 }
 
-variable "vm_nic" {
-  type = map
-  default = {
-	
-      "BACKEND-PROD-VM-DEVTEST-EU01" = "BACKEND-PROD-NIC-DEVTEST-EU01"
-      "BACKEND-STAG-VM-DEVTEST-EU01" = "BACKEND-STAG-NIC-DEVTEST-EU01"
-  }
-  description = "Virtual machines and network interfaces."
-}
-
-variable "computer_name" {
+variable "mysql_database_name" {
   type        = string
-  default     = "backend"
-  description = "Computer name."
+  default     = "mysql-database-devtest-eu01"
+  description = "MySQL Database Name"
 }
 
-variable "admin_username" {
+variable "mysql_firewall_rule_name" {
   type        = string
-  default     = "fnc1_admin"
-  description = "Admin name."
+  default     = "mysql-firewall-rule-home-ip"
+  description = "MySQL Firewall Rule Name"
+}
+
+variable "mysql_vnet_name" {
+  type        = string
+  default     = "mysql-vnet-devtest-eu01"
+  description = "MySQL Vnet Name"
+}
+
+variable "admin_name" {
+  type        = string
+  default     = "devadmin"
+  description = "MySQL Administrator"
 }
 
 variable "admin_password" {
   type        = string
-  default     = "PLPrQBQaXXklTRc6CYiPXFwxlD6jrpUT"
-  description = "Admin password."
+  default     = "bKS1s4X7Sb9hdOGP"
+  description = "MySQL Administrator Password"
 }
