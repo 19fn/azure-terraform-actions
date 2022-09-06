@@ -25,12 +25,10 @@ jobs:
       - name: Create and start virtual environment
         run: |
           python -m venv venv
-          source votingapp/venv/bin/activate
-        working-directory: votingapp
+          source venv/bin/activate
       
       - name: Install dependencies
         run: pip install -r requirements.txt
-        working-directory: votingapp
       
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2
