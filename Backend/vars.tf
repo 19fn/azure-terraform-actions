@@ -57,3 +57,15 @@ variable "admin_password" {
   default     = "bKS1s4X7Sb9hdOGP"
   description = "MySQL Administrator Password"
 }
+
+variable "key_vault_name" {
+  type        = string
+  default     = "KV-DEVTEST-EU01"
+  description = "Key Vault name"
+}
+
+variable "key_vault_clientID" {
+  type        = string
+  default     = "c34e2a2b-b3a7-4846-ba5c-559feabdbcef"
+  description = "Key Vault SP Client ID"
+}

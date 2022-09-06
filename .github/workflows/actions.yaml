@@ -10,7 +10,7 @@ env:
 
 jobs:
   backend:
-    name: 'Backend MySQL'
+    name: 'Backend Pipeline'
     runs-on: ubuntu-latest
 
     # Set the working directory to main for the config files

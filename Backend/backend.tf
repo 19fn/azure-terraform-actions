@@ -62,3 +62,34 @@ resource "azurerm_mysql_virtual_network_rule" "vnet_rule" {
     data.azurerm_subnet.subnet
   ]
 }
+
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_key_vault" "kv" {
+  name                        = var.key_vault_name
+  location                    = var.rg_location
+  resource_group_name         = var.rg_name
+  enabled_for_disk_encryption = true
+  tenant_id                   = data.azurerm_client_config.current.tenant_id
+  soft_delete_retention_days  = 7
+  purge_protection_enabled    = false
+
+  sku_name = "standard"
+
+  access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = var.key_vault_clientID
+
+    key_permissions = [
+      "Get", "Create", "Decrypt", "Delete", "Encrypt", "List", "UnwrapKey", "WrapKey"
+    ]
+
+    secret_permissions = [
+      "Delete", "Get", "List", "Set"
+    ]
+
+    storage_permissions = [
+      "Get",
+    ]
+  }
+}
