@@ -24,8 +24,8 @@ jobs:
 
       - name: Create and start virtual environment
         run: |
-          python -m venv venv
-          source venv/bin/activate
+          python -m venv votingapp/venv
+          source votingapp/venv/bin/activate
       
       - name: Install dependencies
         run: pip install -r votingapp/requirements.txt
