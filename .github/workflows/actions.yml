@@ -29,7 +29,7 @@ jobs:
         working-directory: votingapp
       
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt 
         working-directory: votingapp
       
       - name: Upload artifact for deployment jobs
@@ -37,8 +37,8 @@ jobs:
         with:
           name: python-app
           path: |
-            ./votingapp 
-            !./votingapp/venv/
+            votingapp 
+            !votingapp/venv/
 
   deploy:
     runs-on: ubuntu-latest
@@ -52,7 +52,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: python-app
-          path: ./votingapp
+          path: votingapp
           
       - name: Log in with Service Principal Azure
         uses: azure/login@v1
