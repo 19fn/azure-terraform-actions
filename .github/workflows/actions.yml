@@ -1,51 +1,73 @@
-on: [push]
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+# More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: WebAppDevTest
+name: Build and deploy Python app to Azure Web App - votingflask
 
-env:
-  # set this to your application's name
-  AZURE_WEBAPP_NAME: 'voting-app-flask'
-  # set this to the path to your web app project, defaults to the repository root
-  AZURE_WEBAPP_PACKAGE_PATH: 'votingapp'
+on:
+  push:
+    branches:
+      - WebAppDevtest
+  workflow_dispatch:
 
 jobs:
-  webapp:
-    name: 'WebApp'
+  build:
     runs-on: ubuntu-latest
 
-    # Set the bash shell
-    defaults:
-      run:
-        shell: bash
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python version
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.9'
+
+      - name: Create and start virtual environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+        working-directory: votingapp
+      
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        working-directory: votingapp
+        
+      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+      
+      - name: Upload artifact for deployment jobs
+        uses: actions/upload-artifact@v2
+        with:
+          name: python-app
+          path: |
+            . 
+            !venv/
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      # Checkout the repository to the GitHub Actions runner
-      - name: Checkout
-        uses: actions/checkout@v2
-
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: python-app
+          path: .
+          
       - name: Log in with Service Principal Azure
         uses: azure/login@v1
         with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'          
       
-      - name: Setup Python 3.x 
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.x
-
-      - name: Install dependencies
-        run: |
-          python -m venv venv
-          source ./venv/bin/activate
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-        working-directory: votingapp
-    
-      - name: Deploy web App 
+      - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
+        id: deploy-to-webapp
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          app-name: 'votingflask'
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_1234 }}
       
       - name: logout
         run: |
