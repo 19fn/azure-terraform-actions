@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Deploy Voting App
+name: WebAppDevtest
 
 on:
   push:
@@ -37,7 +37,7 @@ jobs:
         with:
           name: python-app
           path: |
-            ./votingapp 
+            ./votingapp
             !./votingapp/venv/
 
   deploy:
@@ -52,7 +52,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: python-app
-          path: ./votingapp
+          path: ./votingapp/.
           
       - name: Log in with Service Principal Azure
         uses: azure/login@v1
